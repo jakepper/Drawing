@@ -2,10 +2,10 @@ using Drawing.Components;
 
 namespace Drawing.Commands;
 
-public class CommandFactory
+public static class CommandFactory
 {
     public enum CommandType { NEW, ADD, REMOVE, SELECT, DESELECT, LOAD, SAVE, NONE }
-    public Canvas Receiver { get; set; }
+    public static Canvas Receiver { get; set; }
 
     /// <summary>
     /// Create -- a factory method for standard commands 
@@ -37,7 +37,7 @@ public class CommandFactory
     ///     For save,
     ///         [0]: string     filename of file to save to  
     /// </param>
-    public virtual Command Create(CommandType commandType, params object[] commandParameters)
+    public static Command Create(CommandType commandType, params object[] commandParameters)
     {
         if (commandType == CommandType.NONE) return null;
 

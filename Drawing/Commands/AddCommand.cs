@@ -59,7 +59,7 @@ public class AddCommand : Command
             Color = Color.White
         };
 
-        _componentAdded = ComponentFactory.Create(_componentType, state);
+        _componentAdded = ComponentFactory.Create(state);
         Receiver.Add(_componentAdded);
 
         return true;

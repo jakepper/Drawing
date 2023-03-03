@@ -15,15 +15,15 @@ public class Invoker
         _toExecute.Enqueue(cmd);
     }
 
-     public void Undo()
-        {
-            EnqueueForExecution(new UndoCommand());
-        }
+    public void Undo()
+    {
+        EnqueueForExecution(new UndoCommand());
+    }
 
-        public void Redo()
-        {
-            EnqueueForExecution(new RedoCommand());
-        }
+    public void Redo()
+    {
+        EnqueueForExecution(new RedoCommand());
+    }
 
     private void ExecuteUndo()
     {

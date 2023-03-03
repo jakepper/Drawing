@@ -4,16 +4,19 @@ using Microsoft.Xna.Framework.Input;
 
 using Drawing.Components;
 using Drawing.Commands;
+using Drawing.Input;
 
 namespace Drawing;
 
 public class App : Game
 {
+    private const int WIDTH = 1600;
+    private const int HEIGHT = 900;
     private GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-     private Input.KeyboardInput _keyboardInput = new();
-    private readonly CommandFactory _commandFactory = new();
-    private readonly Canvas _canvas = new();
+    private readonly InputHandler _inputHandler = new();
+    private Menu _menu;
+    private Canvas _canvas;
     private string _selectedResource;
     private float _currentScale = 1.0F;
 
@@ -30,7 +33,12 @@ public class App : Game
         _graphics.PreferredBackBufferHeight = 900;
         _graphics.ApplyChanges();
 
-        _commandFactory.Receiver = _canvas;
+        CommandFactory.Receiver = _canvas;
+
+        int menuWidth = (int) WIDTH / 8;
+
+        _menu = new(new Vector2(0, 0), menuWidth, HEIGHT);
+        _canvas = new(new Vector2(menuWidth, 0), WIDTH - menuWidth, HEIGHT);
 
         base.Initialize();
     }
@@ -46,7 +54,7 @@ public class App : Game
         if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
             Exit();
 
-        _keyboardInput.Update(gameTime);
+        _inputHandler.Update(gameTime);
 
         base.Update(gameTime);
     }

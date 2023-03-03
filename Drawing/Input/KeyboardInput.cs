@@ -13,22 +13,18 @@ public class KeyboardInput : IInputDevice
     {
         public Keys Key;
         public bool KeyPressOnly;
-        public InputDeviceHelper.CommandDelegate Callback;
+        public CommandFactory.CommandType CMD;
     }
 
-    private Dictionary<Keys, CommandEntry> _commandEntries = new();
-    private List<CommandEntry> _toRegister = new();
-    private List<Keys> _toUnregister = new();
+    private readonly Invoker _invoker;
+    private readonly Dictionary<Keys, CommandEntry> _commandEntries = new();
+    private readonly List<CommandEntry> _toRegister = new();
+    private readonly List<Keys> _toUnregister = new();
     private KeyboardState _statePrevious;
 
-    private bool keyPressed(KeyboardState state, Keys key)
+    public KeyboardInput(Invoker invoker)
     {
-        return (state.IsKeyDown(key) && !_statePrevious.IsKeyDown(key));
-    }
-
-    public bool keyReleased(KeyboardState state, Keys key)
-    {
-        return (state.IsKeyUp(key) && _statePrevious.IsKeyDown(key));
+        _invoker = invoker;
     }
 
     public void Update(GameTime gameTime)
@@ -59,18 +55,20 @@ public class KeyboardInput : IInputDevice
         {
             if (entry.KeyPressOnly && keyPressed(state, entry.Key))
             {
-                entry.Callback();
+                // entry.Callback();
+                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, commandParameters));
             }
             else if (!entry.KeyPressOnly && keyReleased(state, entry.Key))
             {
-                entry.Callback();
+                // entry.Callback();
+                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, commandParameters));
             }
         }
 
         _statePrevious = state;
     }
 
-    public void RegisterCommand(Keys key, bool keyPressOnly, InputDeviceHelper.CommandDelegate callback)
+    public void RegisterCommand(Keys key, bool keyPressOnly, CommandFactory.CommandType cmd)
     {
         if (_commandEntries.ContainsKey(key))
         {
@@ -80,7 +78,7 @@ public class KeyboardInput : IInputDevice
         _toRegister.Add(new CommandEntry{
             Key = key,
             KeyPressOnly = keyPressOnly,
-            Callback = callback
+            CMD = cmd
         });
     }
 
@@ -90,5 +88,15 @@ public class KeyboardInput : IInputDevice
         {
             _toUnregister.Add(key);
         }
+    }
+
+    private bool keyPressed(KeyboardState state, Keys key)
+    {
+        return (state.IsKeyDown(key) && !_statePrevious.IsKeyDown(key));
+    }
+
+    private bool keyReleased(KeyboardState state, Keys key)
+    {
+        return (state.IsKeyUp(key) && _statePrevious.IsKeyDown(key));
     }
 }

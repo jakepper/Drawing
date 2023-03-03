@@ -21,6 +21,10 @@ public class Component
     }
     public void Draw(SpriteBatch spriteBatch)
     {
-        spriteBatch.Draw(_texture, State.Position, State.Color);
+        spriteBatch.Draw(
+            texture : _texture, 
+            position : State.Position,
+            color : State.Color
+        );
     }
 }

@@ -12,6 +12,18 @@ public class Canvas
     private static readonly DataContractJsonSerializer jsonSerializer = new(typeof(List<State>));
     private readonly List<Component> _components = new();
 
+    public Vector2 Position;
+    public int Width;
+    public int Height;
+    public Color Color = Color.White;
+
+    public Canvas(Vector2 position, int width, int height)
+    {
+        Position = position;
+        Width = width;
+        Height = height;
+    }
+
     public void Load(Stream stream) 
     {
         var states = jsonSerializer.ReadObject(stream) as List<State>;
