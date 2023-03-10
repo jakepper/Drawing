@@ -1,5 +1,8 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using static System.Formats.Asn1.AsnWriter;
+using System.Drawing;
+using System;
 
 namespace Drawing.Components;
 
@@ -7,14 +10,13 @@ public class Component
 {
     public State State { get; set; }
     public bool IsSelected { get; set; }
-    private Texture2D _texture;
+    public Texture2D Texture;
 
     public Component(State state, Texture2D texture) {
         State = state;
-        _texture = texture;
+        Texture = texture;
     }
 
-    // public abstract void Initialize();
     public void Update(GameTime gameTime)
     {
 
@@ -22,9 +24,15 @@ public class Component
     public void Draw(SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(
-            texture : _texture, 
-            position : State.Position,
-            color : State.Color
-        );
+            texture: Texture,
+            position: State.Position,
+            sourceRectangle: null,
+            color: State.Color,
+            rotation: 0.0f,
+            origin: Vector2.Zero,
+            scale: new Vector2(State.Scale, State.Scale),
+            effects: SpriteEffects.None,
+            layerDepth: 0
+           );
     }
 }

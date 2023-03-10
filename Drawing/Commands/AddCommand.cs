@@ -41,7 +41,7 @@ public class AddCommand : Command
 
     public override bool Execute()
     {
-        if (_componentType == ComponentFactory.ComponentType.NONE || Receiver == null) return false;
+        if ( Receiver == null) return false;
 
         
         var width = Convert.ToInt16(Math.Round(DefaultWidth * _scale, 0));
@@ -54,8 +54,7 @@ public class AddCommand : Command
         {
             ComponentType = _componentType,
             Position = _position,
-            Width = width,
-            Height = height,
+            Scale = _scale,
             Color = Color.White
         };
 

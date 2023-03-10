@@ -11,17 +11,19 @@ public class Canvas
 {
     private static readonly DataContractJsonSerializer jsonSerializer = new(typeof(List<State>));
     private readonly List<Component> _components = new();
+    private Texture2D _texture;
 
     public Vector2 Position;
     public int Width;
     public int Height;
     public Color Color = Color.White;
 
-    public Canvas(Vector2 position, int width, int height)
+    public Canvas(Vector2 position, int width, int height, Texture2D texture)
     {
         Position = position;
         Width = width;
         Height = height;
+        _texture = texture;
     }
 
     public void Load(Stream stream) 
@@ -62,8 +64,8 @@ public class Canvas
     public void ToggleSelectionAtPosition(Vector2 position) 
     {
         var component = _components.FindLast(c => {
-            return position.X >= c.State.Position.X && position.X < c.State.Position.X + c.State.Width
-            && position.Y >= c.State.Position.Y && position.Y < c.State.Position.Y + c.State.Height;
+            return position.X >= c.State.Position.X && position.X < c.State.Position.X + c.Texture.Width
+            && position.Y >= c.State.Position.Y && position.Y < c.State.Position.Y + c.Texture.Height;
         });
 
         if (component == null) return;
@@ -71,12 +73,21 @@ public class Canvas
         component.IsSelected = !component.IsSelected;
     }
 
-    public void DeselectAll()
+    public List<Component> DeselectAll()
     {
+        var list = new List<Component>();
         foreach (var component in _components)
         {
             component.IsSelected = false;
+            list.Add(component);
         }
+
+        return list;
+    }
+
+    public void Delete(Component c)
+    {
+        _components.Remove(c);
     }
 
     public void DeleteAllSelected()
@@ -100,6 +111,11 @@ public class Canvas
     }
 
     public void Draw(SpriteBatch spriteBatch) {
+        
+        // draw background
+        spriteBatch.Draw(_texture, new Rectangle((int)Position.X, (int)Position.Y, Width, Height), Color.Chocolate);
+
+        // draw components
         foreach (var component in _components) {
             component.Draw(spriteBatch);
         }

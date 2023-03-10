@@ -2,30 +2,43 @@ using System.Collections.Generic;
 
 namespace Drawing.Commands;
 
-public class Invoker
+public static class Invoker
 {
-    private readonly Queue<Command> _toExecute = new();
-    private readonly Stack<Command> _undo = new();
-    private readonly Stack<Command> _redo = new();
+    private static readonly Queue<Command> _toExecute = new();
+    private static readonly Stack<Command> _undo = new();
+    private static readonly Stack<Command> _redo = new();
 
-    public void EnqueueForExecution(Command cmd)
+    public static void EnqueueForExecution(Command cmd)
     {
         if (cmd == null) return;
 
         _toExecute.Enqueue(cmd);
     }
 
-    public void Undo()
+    public static void Update()
+    {
+        while (_toExecute.TryDequeue(out Command cmd))
+        {
+            if (cmd is UndoCommand)
+                ExecuteUndo();
+            else if (cmd is RedoCommand)
+                ExecuteRedo();
+            else
+                if (cmd.Execute()) _undo.Push(cmd);
+        }
+    }
+
+    public static void Undo()
     {
         EnqueueForExecution(new UndoCommand());
     }
 
-    public void Redo()
+    public static void Redo()
     {
         EnqueueForExecution(new RedoCommand());
     }
 
-    private void ExecuteUndo()
+    private static void ExecuteUndo()
     {
         if (_undo.Count < 1) return;
 
@@ -34,7 +47,7 @@ public class Invoker
         _redo.Push(cmd);
     }
 
-    private void ExecuteRedo()
+    private static void ExecuteRedo()
     {
         if (_redo.Count < 1) return;
 

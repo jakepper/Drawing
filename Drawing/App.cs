@@ -12,13 +12,12 @@ public class App : Game
 {
     private const int WIDTH = 1600;
     private const int HEIGHT = 900;
-    private GraphicsDeviceManager _graphics;
+    private readonly GraphicsDeviceManager _graphics;
     private SpriteBatch _spriteBatch;
-    private readonly InputHandler _inputHandler = new();
+    private Texture2D _blankTexture;
+    private InputHandler _inputHandler;
     private Menu _menu;
     private Canvas _canvas;
-    private string _selectedResource;
-    private float _currentScale = 1.0F;
 
     public App()
     {
@@ -33,12 +32,20 @@ public class App : Game
         _graphics.PreferredBackBufferHeight = 900;
         _graphics.ApplyChanges();
 
-        CommandFactory.Receiver = _canvas;
+        _blankTexture = new Texture2D(GraphicsDevice, 1, 1);
+        _blankTexture.SetData(new[] { Color.White });
+
+        ComponentFactory.LoadContent(Content);
 
         int menuWidth = (int) WIDTH / 8;
+        _menu = new(new Vector2(0, 0), menuWidth, HEIGHT, _blankTexture);
+        
+        _canvas = new(new Vector2(menuWidth, 0), WIDTH - menuWidth, HEIGHT, _blankTexture);
+        CommandFactory.Receiver = _canvas;
 
-        _menu = new(new Vector2(0, 0), menuWidth, HEIGHT);
-        _canvas = new(new Vector2(menuWidth, 0), WIDTH - menuWidth, HEIGHT);
+        _inputHandler = new(_menu);
+        _inputHandler.RegisterKeyboardCommand(Keys.F1, true, CommandFactory.CommandType.NEW);
+        _inputHandler.RegisterKeyboardCommand(Keys.F2, true, CommandFactory.CommandType.DESELECT);
 
         base.Initialize();
     }
@@ -46,7 +53,6 @@ public class App : Game
     protected override void LoadContent()
     {
         _spriteBatch = new SpriteBatch(GraphicsDevice);
-        ComponentFactory.LoadContent(Content);
     }
 
     protected override void Update(GameTime gameTime)
@@ -55,6 +61,7 @@ public class App : Game
             Exit();
 
         _inputHandler.Update(gameTime);
+        Invoker.Update();
 
         base.Update(gameTime);
     }
@@ -65,7 +72,8 @@ public class App : Game
 
         _spriteBatch.Begin();
 
-        if (_canvas != null) _canvas.Draw(_spriteBatch);
+        _menu?.Draw(_spriteBatch);
+        _canvas?.Draw(_spriteBatch);
 
         _spriteBatch.End();
 

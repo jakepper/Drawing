@@ -23,4 +23,14 @@ public class SaveCommand : Command
 
         return true;
     }
+
+    internal override void Undo()
+    {
+        // Do nothing -- we don't want to delete the saved file.
+    }
+
+    internal override void Redo()
+    {
+        Execute();
+    }
 }

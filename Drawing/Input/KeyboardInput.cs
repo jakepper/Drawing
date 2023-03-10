@@ -16,16 +16,10 @@ public class KeyboardInput : IInputDevice
         public CommandFactory.CommandType CMD;
     }
 
-    private readonly Invoker _invoker;
     private readonly Dictionary<Keys, CommandEntry> _commandEntries = new();
     private readonly List<CommandEntry> _toRegister = new();
     private readonly List<Keys> _toUnregister = new();
     private KeyboardState _statePrevious;
-
-    public KeyboardInput(Invoker invoker)
-    {
-        _invoker = invoker;
-    }
 
     public void Update(GameTime gameTime)
     {
@@ -56,12 +50,12 @@ public class KeyboardInput : IInputDevice
             if (entry.KeyPressOnly && keyPressed(state, entry.Key))
             {
                 // entry.Callback();
-                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, commandParameters));
+                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, new object[]{}));
             }
             else if (!entry.KeyPressOnly && keyReleased(state, entry.Key))
             {
                 // entry.Callback();
-                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, commandParameters));
+                Invoker.EnqueueForExecution(CommandFactory.Create(entry.CMD, new object[]{}));
             }
         }
 

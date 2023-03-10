@@ -9,17 +9,16 @@ public static class ComponentFactory
 {
     public enum ComponentType { 
         CHINESE_DRAGON,
-        COMPONENT_2,
-        COMPONENT_3,
-        COMPONENT_4,
-        COMPONENT_5,
-        NONE
+        // COMPONENT_2,
+        // COMPONENT_3,
+        // COMPONENT_4,
+        // COMPONENT_5,
     }
 
     private static readonly Dictionary<ComponentType, Texture2D> components = new();
 
     public static void LoadContent(ContentManager content) {
-        components.Add(ComponentType.CHINESE_DRAGON, content.Load<Texture2D>("Entites/chinese-dragon"));
+        components.Add(ComponentType.CHINESE_DRAGON, content.Load<Texture2D>("Entities/chinese-dragon"));
         // components.Add(ComponentType.COMPONENT_2, content.Load<Texture2D>("2"));
         // components.Add(ComponentType.COMPONENT_4, content.Load<Texture2D>("4"));
         // components.Add(ComponentType.COMPONENT_5, content.Load<Texture2D>("5"));
@@ -56,7 +55,7 @@ public static class ComponentFactory
             case "5":
                 return ComponentType.CHINESE_DRAGON;
             default:
-                return ComponentType.NONE;
+                return ComponentType.CHINESE_DRAGON;
         }
     }
 }

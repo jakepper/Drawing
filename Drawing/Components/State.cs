@@ -12,9 +12,7 @@ public class State
     [DataMember]
     public Vector2 Position;
     [DataMember]
-    public int Width;
-    [DataMember]
-    public int Height;
+    public float Scale;
     [DataMember]
     public Color Color;
 }

@@ -43,7 +43,7 @@ public static class CommandFactory
 
         if (Receiver == null) return null;
 
-        Command command=null;
+        Command command = null;
         switch (commandType)
         {
             case CommandType.NEW:
