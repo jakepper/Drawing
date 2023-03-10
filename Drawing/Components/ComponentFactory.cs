@@ -8,7 +8,7 @@ namespace Drawing.Components;
 public static class ComponentFactory
 {
     public enum ComponentType { 
-        CHINESE_DRAGON,
+        PINK_PAINT,
         // COMPONENT_2,
         // COMPONENT_3,
         // COMPONENT_4,
@@ -18,7 +18,7 @@ public static class ComponentFactory
     private static readonly Dictionary<ComponentType, Texture2D> components = new();
 
     public static void LoadContent(ContentManager content) {
-        components.Add(ComponentType.CHINESE_DRAGON, content.Load<Texture2D>("Entities/chinese-dragon"));
+        components.Add(ComponentType.PINK_PAINT, content.Load<Texture2D>("Entities/pink-paint"));
         // components.Add(ComponentType.COMPONENT_2, content.Load<Texture2D>("2"));
         // components.Add(ComponentType.COMPONENT_4, content.Load<Texture2D>("4"));
         // components.Add(ComponentType.COMPONENT_5, content.Load<Texture2D>("5"));
@@ -29,7 +29,7 @@ public static class ComponentFactory
     {
         switch (state.ComponentType) 
         {
-            case ComponentType.CHINESE_DRAGON:
+            case ComponentType.PINK_PAINT:
                 return new Component(state, components[state.ComponentType]);
             // case ComponentType.COMPONENT_2:
             // case ComponentType.COMPONENT_3:
@@ -45,17 +45,17 @@ public static class ComponentFactory
         switch (componentType.Trim().ToUpper())
         {
             case "CHINESE_DRAGON":
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
             case "2":
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
             case "3":
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
             case "4":
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
             case "5":
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
             default:
-                return ComponentType.CHINESE_DRAGON;
+                return ComponentType.PINK_PAINT;
         }
     }
 }

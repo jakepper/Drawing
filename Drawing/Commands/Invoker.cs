@@ -1,4 +1,6 @@
 using System.Collections.Generic;
+using System.Diagnostics;
+using System.Security.Cryptography;
 
 namespace Drawing.Commands;
 
@@ -19,6 +21,7 @@ public static class Invoker
     {
         while (_toExecute.TryDequeue(out Command cmd))
         {
+            Debug.WriteLine("Executed Command");
             if (cmd is UndoCommand)
                 ExecuteUndo();
             else if (cmd is RedoCommand)

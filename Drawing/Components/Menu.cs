@@ -29,15 +29,15 @@ public class Menu
         Height = height;
         _texture = texture;
 
-        _selectedResource = "CHINESE_DRAGON";
+        _selectedResource = "PINK_PAINT";
 
-        Vector2 resourcePosition = new Vector2(Position.X + 16, Position.Y + 16);
+        Vector2 resourcePosition = new(Position.X + 16, Position.Y + 16);
         foreach (ComponentFactory.ComponentType c in Enum.GetValues(typeof(ComponentFactory.ComponentType)))
         {
             var component = ComponentFactory.Create(new State() {
                 ComponentType = c,
                 Position = new Vector2(),
-                Scale = 0.25F,
+                Scale = 1.0F,
                 Color = Color.White
             });
 

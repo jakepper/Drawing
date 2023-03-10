@@ -2,6 +2,7 @@ using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Input;
 
 using Drawing.Components;
+using System.Diagnostics;
 
 namespace Drawing.Input;
 
@@ -25,6 +26,7 @@ public class MouseInput : IInputDevice
         }
 
         if (LeftClicked(state)) {
+            Debug.WriteLine("Left Mouse Button Clicked");
             _menu.HandleClick(new Vector2(state.X, state.Y));
         }
 

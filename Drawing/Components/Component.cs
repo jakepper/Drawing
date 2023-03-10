@@ -1,8 +1,5 @@
 using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using static System.Formats.Asn1.AsnWriter;
-using System.Drawing;
-using System;
 
 namespace Drawing.Components;
 
